@@ -1,2 +1,5 @@
+check that the preact works in productions
+check that service worker is registered, and turn off debug
+
 Align loader to the top when loading using div
 make button for search

@@ -72,7 +72,7 @@ function setPath(name) {
     var state = {};
     var title = 'Hello World';
     var url = 'hello-world.html';
-    history.pushState(state, title, url);
+    // history.pushState(state, title, url);
 }
 
 class IndexPage extends React.Component {
@@ -134,9 +134,9 @@ class IndexPage extends React.Component {
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                        {stub.map(x => {
+                        {stub.map((x, i) => {
                             return (
-                                <Table.Row>
+                                <Table.Row key={i}>
                                     <Table.Cell>{x.name}</Table.Cell>
                                     <Table.Cell>{x.seeds}</Table.Cell>
                                     <Table.Cell>{x.size}</Table.Cell>
@@ -160,4 +160,4 @@ const routedIndex = () => {
         </Router>
     )
 }
-export default routedIndex
+export default IndexPage
