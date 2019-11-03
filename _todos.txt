@@ -1,0 +1,1 @@
+Align loader to the top when loading using div
