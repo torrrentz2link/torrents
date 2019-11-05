@@ -44,5 +44,5 @@
   },
   "scripts": {
     "devserver": "nodemon ./nodejs/index.js",
-    },
+    }
 }
