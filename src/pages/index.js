@@ -1,28 +1,34 @@
 import React from "react"
-import { Link } from "gatsby"
 import { sortBy } from 'lodash'
 
 import Layout from "../components/layout"
-import Image from "../components/image"
 import SEO from "../components/seo"
 // import '../main.scss'
-import { Router, navigate } from "@reach/router"
+import { Router, navigate, Location } from "@reach/router"
 import { Message, Input, Button, Table, Segment } from 'semantic-ui-react'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
+import xbytes from 'xbytes'
 
 var mock = new MockAdapter(axios);
 const log = console.log
 const stub = [
+        {
+        title: "title3",
+        seeds: 3,
+        size: "1000mb",
+        torrent: "fddsfd",
+        magnet: "asdf"
+    },
     {
         title: "title",
-        seeds: 1233,
+        seeds: 1,
         size: "1000mb",
         torrent: "fddsfd",
         magnet: "asdf"
     }, {
-        title: "title",
-        seeds: 1233,
+        title: "title1",
+        seeds: 2,
         size: "1000mb",
         torrent: "fddsfd",
         magnet: "asdf"
@@ -32,6 +38,16 @@ mock.onGet(new RegExp("/torrents/*")).reply(200, {
     torrents: stub
 }
 );
+
+//normalizes text of size with different units
+function parseSize (inp){
+    return inp.map(x=>{
+        const number = xbytes.parseSize(x.size)
+        x.number = number
+        x.size = xbytes(number)
+        return x
+    })
+}
 
 const isIntro = (
     <Message>
@@ -82,8 +98,6 @@ const stateFlags = {
     nothing: false,
 }
 
-var count = 0
-
 class IndexPage extends React.Component {
     state = {
         loading: false,
@@ -91,40 +105,72 @@ class IndexPage extends React.Component {
         error: false,
         nothing: true, //if no query has been made
         input: "",
-        column: null,
-        direction: null,
-    }
-    makeState() {
-        count += 1
-        log(count, this.setState)
-        switch (count) {
-            case 0:
-                this.setState({ ...stateFlags, nothing: true })
-                break;
-            case 1:
-                this.setState({ ...stateFlags, results: stub })
-                break;
-            case 2:
-                this.setState({ ...stateFlags, loading: true, results: [] })
-                break;
-            case 3:
-                this.setState({ ...stateFlags, error: true, results: [] })
-                break;
-            case 4:
-                count = -1
-                this.setState({ ...stateFlags, results: [] })
-                break;
-        }
-
+        column: 'seeds',
+        direction: 'descending'
     }
     componentDidMount() {
-        const that = this
-        setInterval(this.makeState.bind(that), 1000)
+        if (this.props.query) {
+            this.searchBegun()
+        }
+    }
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.query != this.props.query) {
+            this.searchBegun()
+        }
+    }
+    handleSort = (clickedColumn) => () => {
+        const { column, results, direction } = this.state
+
+        if (column !== clickedColumn) {
+            this.setState({
+                column: clickedColumn,
+                results: sortBy(results, [clickedColumn]),
+                direction: 'ascending',
+            })
+            return
+        }
+
+        this.setState({
+            results: results.reverse(),
+            direction: direction === 'ascending' ? 'descending' : 'ascending',
+        })
+    }
+    initialSort = (results)=>{
+        const {column, direction} = this.state
+        let sResults = sortBy(results, column)
+        if (direction == 'descending'){
+            sResults = sResults.reverse()
+        }
+        return sResults
+    }
+    searchBegun = () => {
+        const query = this.props.query
+        this.setState({ ...stateFlags, loading: true })
+        http.get("/torrents/" + query).then(this.searchResolve).catch(x => {
+            this.setState({ ...stateFlags, error: true })
+        })
+    }
+    searchResolve = (res) => {
+        const r = this.initialSort(parseSize(res.data.torrents))
+        const query = this.props.query
+        this.setState({ ...stateFlags, results: r })
+    }
+    hInput = (e) => {
+        this.setState({ input: e.target.value })
+    }
+    hSubmit = (e) => {
+        if (e.key == "Enter") {
+            this.searchBegin()
+        }
+    }
+    searchBegin = () => {
+        navigate("/search/" + this.state.input)
     }
     render() {
         const query = this.props.query
         // const props.location.state.input
-        const { loading, results, error, nothing } = this.state
+        const { loading, results, error, nothing, column, direction } = this.state
+        const { hInput, hSubmit, searchBegin } = this
         const empty = !results.length
         let message
         let searchIcon
@@ -150,15 +196,24 @@ class IndexPage extends React.Component {
             <Layout>
                 <SEO title="Home" />
                 <Segment>
-                    <Input fluid loading={inputLoading} icon={searchIcon} iconPosition='left' action='Search' placeholder='Search torrents' />
+                    <Input onChange={hInput} onKeyPress={hSubmit} fluid loading={inputLoading} icon={searchIcon} iconPosition='left' action={<Button onClick={searchBegin}>Search</Button>} placeholder='Search torrents' />
                 </Segment>
                 {message}
                 {!nothing && <Table striped compact sortable>
                     <Table.Header>
                         <Table.Row>
-                            <Table.HeaderCell >Name</Table.HeaderCell>
-                            <Table.HeaderCell collapsing sorted="descending">Seeds</Table.HeaderCell>
-                            <Table.HeaderCell collapsing>Size</Table.HeaderCell>
+                            <Table.HeaderCell
+                                sorted={column === 'title' ? direction : null}
+                                onClick={this.handleSort('title')}
+                            >Name</Table.HeaderCell>
+                            <Table.HeaderCell collapsing
+                                sorted={column === 'seeds' ? direction : null}
+                                onClick={this.handleSort('seeds')}
+                            >Seeds</Table.HeaderCell>
+                            <Table.HeaderCell collapsing
+                                sorted={column === 'number' ? direction : null}
+                                onClick={this.handleSort('number')}
+                            >Size</Table.HeaderCell>
                             <Table.HeaderCell collapsing>Torrent</Table.HeaderCell>
                         </Table.Row>
                     </Table.Header>
@@ -180,11 +235,28 @@ class IndexPage extends React.Component {
     }
 }
 
-const routedIndex = () => {
-    return (
-        <Router>
-            <IndexPage path='/:query' />
-        </Router>
-    )
-}
-export default IndexPage
+const ClientRoutes = props => (
+    <Location>
+        {({ location }) => (
+            <Router location={location} className="router">
+                {props.children}
+            </Router>
+        )}
+    </Location>
+)
+
+const Page = props => (
+    <div>
+        {props.page}
+    </div>
+)
+
+const Routed = () => (
+    <ClientRoutes>
+        <IndexPage path="/search/:query" />
+        <IndexPage path="/" />
+    </ClientRoutes>
+)
+
+
+export default Routed

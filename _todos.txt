@@ -1,3 +1,6 @@
 check that the preact works in productions
 check that service worker is registered, and turn off debug
 check magnet
+check sorting for name on table
+make SEO after name is made
+check size parsing
