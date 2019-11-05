@@ -10,7 +10,6 @@ import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
 
 import Header from "./header"
-import 'semantic-ui-css/semantic.min.css'
 import "./layout.css"
 // import "../main.scss"
 // import "uikit/dist/css/uikit.min.css"
