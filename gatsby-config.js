@@ -5,7 +5,7 @@ module.exports = {
     author: `@gatsbyjs`,
   },
   plugins: [
-     'gatsby-plugin-preact',
+    //  'gatsby-plugin-preact',
      {resolve: `gatsby-plugin-offline`,
      options: {
          debug: true,
