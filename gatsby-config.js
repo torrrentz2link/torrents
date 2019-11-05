@@ -6,10 +6,10 @@ module.exports = {
   },
   plugins: [
      'gatsby-plugin-preact',
-     {resolve: `gatsby-plugin-offline`,
-     options: {
-         debug: true,
-     }},
+    //  {resolve: `gatsby-plugin-offline`,
+    //  options: {
+    //      debug: true,
+    //  }},
     `gatsby-plugin-react-helmet`,
     {
       resolve: `gatsby-source-filesystem`,

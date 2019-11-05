@@ -1,43 +1,49 @@
 import React from "react"
 import { Link } from "gatsby"
+import { sortBy } from 'lodash'
 
 import Layout from "../components/layout"
 import Image from "../components/image"
 import SEO from "../components/seo"
 // import '../main.scss'
 import { Router, navigate } from "@reach/router"
-import { Message, Input, Icon, Button, Table, Dimmer, Loader, Segment, Header } from 'semantic-ui-react'
+import { Message, Input, Button, Table, Segment } from 'semantic-ui-react'
+import axios from 'axios'
+import MockAdapter from 'axios-mock-adapter'
 
+var mock = new MockAdapter(axios);
+const log = console.log
 const stub = [
     {
-        name: "title",
+        title: "title",
         seeds: 1233,
         size: "1000mb",
-        torrent: "fddsfd"
+        torrent: "fddsfd",
+        magnet: "asdf"
     }, {
-        name: "title",
+        title: "title",
         seeds: 1233,
         size: "1000mb",
-        torrent: "fddsfd"
-    }, {
-        name: "title",
-        seeds: 1233,
-        size: "1000mb",
-        torrent: "fddsfd"
+        torrent: "fddsfd",
+        magnet: "asdf"
     },
 ]
+mock.onGet(new RegExp("/torrents/*")).reply(200, {
+    torrents: stub
+}
+);
 
 const isIntro = (
     <Message>
         <Message.Content>
             <Message.Header>Torrent Search</Message.Header>
-            Search multiple torrent sites simulatenously with us. We aggregate results from: ... .
+            Search multiple torrent sites simulatenously with us. We aggregate results from: KickassTorrents, The Pirate Bay, Rarbg, Torrentz2, 1337x.
         </Message.Content>
     </Message>
 )
 
 function hasLoaded(number) {
-    return (<Message success>
+    return (<Message success size='mini'>
         <Message.Content>
             <Message.Header>Found {number} results.</Message.Header>
         </Message.Content>
@@ -51,46 +57,69 @@ const isLoading = (<Message icon info size='mini'>
     </Message.Content>
 </Message>)
 
-const isNothing = (<Message icon warning>
+const isNothing = (<Message icon warning size='mini'>
     {/* <Icon name='undo' /> */}
     <Message.Content>
         <Message.Header>Nothing Found</Message.Header>
     </Message.Content>
 </Message>)
-const isError = (<Message icon negative>
+const isError = (<Message icon negative size='mini'>
     {/* <Icon name='x' /> */}
     <Message.Content>
         <Message.Header>Error</Message.Header>
     </Message.Content>
 </Message>)
 
-function getPath() {
-    return window.location.href.toString().split(window.location.host)[1]
+const http = axios
+// .create({
+// //   baseURL: 'https://3000-f7a9f611-984b-4cc3-a802-859bf1fe449b.ws-ap0.gitpod.io/torrents',
+//   timeout: 11000,
+// });
+
+const stateFlags = {
+    loading: false,
+    error: false,
+    nothing: false,
 }
 
-function setPath(name) {
-    var state = {};
-    var title = 'Hello World';
-    var url = 'hello-world.html';
-    // history.pushState(state, title, url);
-}
+var count = 0
 
 class IndexPage extends React.Component {
     state = {
         loading: false,
-        results: stub,
+        results: [],
         error: false,
         nothing: true, //if no query has been made
         input: "",
+        column: null,
+        direction: null,
     }
-    loading = () => this.setState({ loading: true })
-    loaded = () => this.setState({ loading: false })
-    search = (e) =>{
-        const val = e.target.value
-        navigate(`/${val}`, {input: val})
+    makeState() {
+        count += 1
+        log(count, this.setState)
+        switch (count) {
+            case 0:
+                this.setState({ ...stateFlags, nothing: true })
+                break;
+            case 1:
+                this.setState({ ...stateFlags, results: stub })
+                break;
+            case 2:
+                this.setState({ ...stateFlags, loading: true, results: [] })
+                break;
+            case 3:
+                this.setState({ ...stateFlags, error: true, results: [] })
+                break;
+            case 4:
+                count = -1
+                this.setState({ ...stateFlags, results: [] })
+                break;
+        }
+
     }
-    searchResolve(res) {
-        this.setState({ loading: false, error: false, nothing: false})
+    componentDidMount() {
+        const that = this
+        setInterval(this.makeState.bind(that), 1000)
     }
     render() {
         const query = this.props.query
@@ -121,23 +150,23 @@ class IndexPage extends React.Component {
             <Layout>
                 <SEO title="Home" />
                 <Segment>
-                    <Input fluid loading={inputLoading} icon={searchIcon} placeholder='Search torrents' />
+                    <Input fluid loading={inputLoading} icon={searchIcon} iconPosition='left' action='Search' placeholder='Search torrents' />
                 </Segment>
                 {message}
-                <Table striped compact>
+                {!nothing && <Table striped compact sortable>
                     <Table.Header>
                         <Table.Row>
                             <Table.HeaderCell >Name</Table.HeaderCell>
-                            <Table.HeaderCell collapsing>Seeds</Table.HeaderCell>
+                            <Table.HeaderCell collapsing sorted="descending">Seeds</Table.HeaderCell>
                             <Table.HeaderCell collapsing>Size</Table.HeaderCell>
                             <Table.HeaderCell collapsing>Torrent</Table.HeaderCell>
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                        {stub.map((x, i) => {
+                        {results.map((x, i) => {
                             return (
                                 <Table.Row key={i}>
-                                    <Table.Cell>{x.name}</Table.Cell>
+                                    <Table.Cell>{x.title}</Table.Cell>
                                     <Table.Cell>{x.seeds}</Table.Cell>
                                     <Table.Cell>{x.size}</Table.Cell>
                                     <Table.Cell><a href="#">Download</a></Table.Cell>
@@ -145,9 +174,7 @@ class IndexPage extends React.Component {
                             )
                         })}
                     </Table.Body>
-                </Table>
-                Intro
-                We look through several torrent sites simulatenously.
+                </Table>}
             </Layout>
         )
     }
@@ -156,7 +183,7 @@ class IndexPage extends React.Component {
 const routedIndex = () => {
     return (
         <Router>
-                <IndexPage path='/:query'/>
+            <IndexPage path='/:query' />
         </Router>
     )
 }
