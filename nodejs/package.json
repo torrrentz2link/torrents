@@ -43,6 +43,6 @@
     "prettier": "^1.18.2"
   },
   "scripts": {
-    "devserver": "nodemon ./nodejs/index.js",
+    "devserver": "nodemon ./nodejs/index.js"
     }
 }
