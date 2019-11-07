@@ -10,38 +10,38 @@ import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import xbytes from 'xbytes'
 
-var mock = new MockAdapter(axios);
+// var mock = new MockAdapter(axios);
 const log = console.log
-const stub = [
-        {
-        title: "title3",
-        seeds: 3,
-        size: "1000mb",
-        torrent: "fddsfd",
-        magnet: "asdf"
-    },
-    {
-        title: "title",
-        seeds: 1,
-        size: "1000mb",
-        torrent: "fddsfd",
-        magnet: "asdf"
-    }, {
-        title: "title1",
-        seeds: 2,
-        size: "1000mb",
-        torrent: "fddsfd",
-        magnet: "asdf"
-    },
-]
-mock.onGet(new RegExp("/torrents/*")).reply(200, {
-    torrents: stub
-}
-);
+// const stub = [
+//         {
+//         title: "title3",
+//         seeds: 3,
+//         size: "1000mb",
+//         torrent: "fddsfd",
+//         magnet: "asdf"
+//     },
+//     {
+//         title: "title",
+//         seeds: 1,
+//         size: "1000mb",
+//         torrent: "fddsfd",
+//         magnet: "asdf"
+//     }, {
+//         title: "title1",
+//         seeds: 2,
+//         size: "1000mb",
+//         torrent: "fddsfd",
+//         magnet: "asdf"
+//     },
+// ]
+// mock.onGet(new RegExp("/torrents/*")).reply(200, {
+//     torrents: stub
+// }
+// );
 
 //normalizes text of size with different units
-function parseSize (inp){
-    return inp.map(x=>{
+function parseSize(inp) {
+    return inp.map(x => {
         const number = xbytes.parseSize(x.size)
         x.number = number
         x.size = xbytes(number)
@@ -135,10 +135,10 @@ class IndexPage extends React.Component {
             direction: direction === 'ascending' ? 'descending' : 'ascending',
         })
     }
-    initialSort = (results)=>{
-        const {column, direction} = this.state
+    initialSort = (results) => {
+        const { column, direction } = this.state
         let sResults = sortBy(results, column)
-        if (direction == 'descending'){
+        if (direction == 'descending') {
             sResults = sResults.reverse()
         }
         return sResults

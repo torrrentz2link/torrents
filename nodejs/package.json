@@ -5,7 +5,7 @@
   "version": "0.1.0",
   "author": "Kyle Mathews <mathews.kyle@gmail.com>",
     "engines": {
-        "node": ">=12.0.0"
+        "node": "12.x"
   },
   "dependencies": {
     "@reach/router": "^1.2.1",

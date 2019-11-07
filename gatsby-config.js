@@ -5,12 +5,11 @@ module.exports = {
         author: `@gatsbyjs`,
     },
     plugins: [
-        // {
-        //     resolve: `gatsby-plugin-offline`,
-        //     options: {
-        //         debug: true,
-        //     }
-        // },
+        {
+            resolve: `gatsby-plugin-offline`,
+            options: {
+            }
+        },
         // {
         //     resolve: `gatsby-plugin-create-client-paths`,
         //     options: { prefixes: [`/search/*`] },
