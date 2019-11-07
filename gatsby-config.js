@@ -10,10 +10,10 @@ module.exports = {
             options: {
             }
         },
-        // {
-        //     resolve: `gatsby-plugin-create-client-paths`,
-        //     options: { prefixes: [`/search/*`] },
-        // },
+        {
+            resolve: `gatsby-plugin-create-client-paths`,
+            options: { prefixes: [`/search/*`] },
+        },
         `gatsby-plugin-react-helmet`,
         {
             resolve: `gatsby-source-filesystem`,
