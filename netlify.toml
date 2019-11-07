@@ -1,5 +1,5 @@
 [[redirects]]
-  from = "/torrents"
+  from = "/torrents/*"
   to = "https://torrentsfreelancer.herokuapp.com/torrents"
   status = 200
   force = true # COMMENT: ensure that we always redirect
