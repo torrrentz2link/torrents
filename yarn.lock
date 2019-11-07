@@ -2935,6 +2935,11 @@ clone-response@1.0.2:
   dependencies:
     mimic-response "^1.0.0"
 
+clone@^1.0.2:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/clone/-/clone-1.0.4.tgz#da309cc263df15994c688ca902179ca3c7cd7c7e"
+  integrity sha1-2jCcwmPfFZlMaIypAheco8fNfH4=
+
 cloudscraper@3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/cloudscraper/-/cloudscraper-3.2.0.tgz#ab18ce0e224c6601616e1ef41b0d713c6f9ce198"
@@ -3767,6 +3772,13 @@ default-gateway@^4.2.0:
   dependencies:
     execa "^1.0.0"
     ip-regex "^2.1.0"
+
+defaults@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/defaults/-/defaults-1.0.3.tgz#c656051e9817d9ff08ed881477f3fe4019f3ef7d"
+  integrity sha1-xlYFHpgX2f8I7YgUd/P+QBnz730=
+  dependencies:
+    clone "^1.0.2"
 
 define-properties@^1.1.2, define-properties@^1.1.3:
   version "1.1.3"
@@ -4743,6 +4755,13 @@ express-graphql@^0.9.0:
     content-type "^1.0.4"
     http-errors "^1.7.3"
     raw-body "^2.4.1"
+
+express-slow-down@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/express-slow-down/-/express-slow-down-1.3.1.tgz#0458bb8670ea1cbedaa00bae4293024ee4e9445e"
+  integrity sha512-mkxVJt3z2e0/LIVp144xpaPw8Ku2f6XS9ftjgwMsUtp+4a84hk6NI6/KTEPkq1kjCsJuXeG6SA/izCWxaErBdg==
+  dependencies:
+    defaults "^1.0.3"
 
 express@^4.17.1:
   version "4.17.1"
