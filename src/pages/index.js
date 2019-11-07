@@ -86,7 +86,9 @@ const isError = (<Message icon negative size='mini'>
     </Message.Content>
 </Message>)
 
-const http = axios
+const http = axios.create({
+    baseURL: "https://torrentsfreelancer.herokuapp.com/"
+})
 // .create({
 // //   baseURL: 'https://3000-f7a9f611-984b-4cc3-a802-859bf1fe449b.ws-ap0.gitpod.io/torrents',
 //   timeout: 11000,
