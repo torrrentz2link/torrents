@@ -2,16 +2,13 @@ import React from "react"
 import { sortBy } from 'lodash'
 
 import Layout from "../components/layout"
-import SEO from "../components/seo"
-// import '../main.scss'
 import { Router, navigate, Location } from "@reach/router"
 import { Message, Input, Button, Table, Segment } from 'semantic-ui-react'
 import axios from 'axios'
-import MockAdapter from 'axios-mock-adapter'
 import xbytes from 'xbytes'
+// import MockAdapter from 'axios-mock-adapter'
 
 // var mock = new MockAdapter(axios);
-const log = console.log
 // const stub = [
 //         {
 //         title: "title3",
@@ -38,6 +35,8 @@ const log = console.log
 //     torrents: stub
 // }
 // );
+const log = console.log
+
 
 //normalizes text of size with different units
 function parseSize(inp) {
@@ -86,6 +85,8 @@ const isError = (<Message icon negative size='mini'>
     </Message.Content>
 </Message>)
 
+// if (process.env.)
+console.log(11111, process.env)
 const http = axios.create({
     baseURL: "https://torrentsfreelancer.herokuapp.com/"
 })
@@ -111,8 +112,11 @@ class IndexPage extends React.Component {
         direction: 'descending'
     }
     componentDidMount() {
-        if (this.props.query) {
+        const query = this.props.query
+        if (query) {
             this.searchBegun()
+            this.setState({input: query})
+
         }
     }
     componentDidUpdate(prevProps, prevState) {
@@ -148,7 +152,7 @@ class IndexPage extends React.Component {
     searchBegun = () => {
         const query = this.props.query
         this.setState({ ...stateFlags, loading: true })
-        http.get("/torrents/" + query +".json").then(this.searchResolve).catch(x => {
+        http.get("/torrents/" + query).then(this.searchResolve).catch(x => {
             console.log(x)
             this.setState({ ...stateFlags, error: true })
         })
@@ -172,7 +176,7 @@ class IndexPage extends React.Component {
     render() {
         const query = this.props.query
         // const props.location.state.input
-        const { loading, results, error, nothing, column, direction } = this.state
+        const { loading, results, error, nothing, column, direction, input } = this.state
         const { hInput, hSubmit, searchBegin } = this
         const empty = !results.length
         let message
@@ -197,9 +201,8 @@ class IndexPage extends React.Component {
         }
         return (
             <Layout>
-                <SEO title="Home" />
                 <Segment>
-                    <Input onChange={hInput} onKeyPress={hSubmit} fluid loading={inputLoading} icon={searchIcon} iconPosition='left' action={<Button onClick={searchBegin}>Search</Button>} placeholder='Search torrents' />
+                    <Input onChange={hInput} value={input} onKeyPress={hSubmit} fluid loading={inputLoading} icon={searchIcon} iconPosition='left' action={<Button onClick={searchBegin}>Search</Button>} placeholder='Search torrents' />
                 </Segment>
                 {message}
                 {!nothing && <Table striped compact sortable>
@@ -227,7 +230,7 @@ class IndexPage extends React.Component {
                                     <Table.Cell>{x.title}</Table.Cell>
                                     <Table.Cell>{x.seeds}</Table.Cell>
                                     <Table.Cell>{x.size}</Table.Cell>
-                                    <Table.Cell><a href="#">Download</a></Table.Cell>
+                                    <Table.Cell><a href={x.magnet}>Download</a></Table.Cell>
                                 </Table.Row>
                             )
                         })}

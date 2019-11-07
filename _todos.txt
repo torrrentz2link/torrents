@@ -1,4 +1,0 @@
-check magnet
-check sorting for name on table
-make SEO after name is made
-check size parsing

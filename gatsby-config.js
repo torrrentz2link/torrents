@@ -1,7 +1,7 @@
 module.exports = {
     siteMetadata: {
-        title: `Gatsby Default Starter`,
-        description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
+        title: `Torrentz2`,
+        description: `Search multiple torrent sites simulatenously with us. We aggregate results from: KickassTorrents, The Pirate Bay, Rarbg, Torrentz2, 1337x.`,
         author: `@gatsbyjs`,
     },
     plugins: [
