@@ -27,6 +27,10 @@ app.listen(PORT, () => {
 });
 
 app.get('/torrents/:query', async (req, res) => {
+    //if (req.header('X-From') !== "Netlify"){
+    //  res.status(403).send();
+    //  return
+    //}
     try {
         const query = req.params.query
         if (query == ""){
