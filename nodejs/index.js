@@ -2,6 +2,14 @@ var express = require("express");
 var compression = require("compression")
 var app = express();
 const slowDown = require("express-slow-down");
+var cors = require('cors')
+
+var corsOptions = {
+  origin: 'https://ecstatic-tereshkova-3bdf21.netlify.com',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
+app.use(cors(corsOptions))
 app.enable("trust proxy")
 app.use(compression())
 const speedLimiter = slowDown({
