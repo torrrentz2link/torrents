@@ -147,6 +147,7 @@ class IndexPage extends React.Component {
         const query = this.props.query
         this.setState({ ...stateFlags, loading: true })
         http.get("/torrents/" + query).then(this.searchResolve).catch(x => {
+            console.log(x)
             this.setState({ ...stateFlags, error: true })
         })
     }
