@@ -4,9 +4,15 @@ var app = express();
 const slowDown = require("express-slow-down");
 var cors = require('cors')
 
+var whitelist = ['https://ecstatic-tereshkova-3bdf21.netlify.com', 'https://8000-f7a9f611-984b-4cc3-a802-859bf1fe449b.ws-ap01.gitpod.io']
 var corsOptions = {
-  origin: 'https://ecstatic-tereshkova-3bdf21.netlify.com',
-  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
 }
 
 app.use(cors(corsOptions))
