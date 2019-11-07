@@ -12,6 +12,8 @@ var corsOptions = {
 app.use(cors(corsOptions))
 app.enable("trust proxy")
 app.use(compression())
+const TorrentSearchApi = require('torrent-search-api');
+
 const speedLimiter = slowDown({
   windowMs: 10 * 60 * 1000, // 15 minutes
   delayAfter: 200, // allow 100 requests per 15 minutes, then...
@@ -20,7 +22,6 @@ const speedLimiter = slowDown({
 
 //  apply to all requests
 app.use(speedLimiter);
-const TorrentSearchApi = require('torrent-search-api');
 // TorrentSearchApi.enablePublicProviders(); //slows down
 TorrentSearchApi.enableProvider('KickassTorrents'); //doesnt work
 TorrentSearchApi.enableProvider('ThePirateBay',);
