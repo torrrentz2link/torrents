@@ -12,7 +12,7 @@ module.exports = {
         },
         {
             resolve: `gatsby-plugin-create-client-paths`,
-            options: { prefixes: [`/search/*`, `/torrents/*`] },
+            options: { prefixes: [`/search/*`] },
         },
         `gatsby-plugin-react-helmet`,
         {
