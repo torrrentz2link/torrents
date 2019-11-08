@@ -4,7 +4,7 @@ var app = express();
 const slowDown = require("express-slow-down");
 var cors = require('cors')
 
-var whitelist = ['https://ecstatic-tereshkova-3bdf21.netlify.com', 'https://8000-f7a9f611-984b-4cc3-a802-859bf1fe449b.ws-ap01.gitpod.io', 'torrentz2.link']
+var whitelist = ['https://ecstatic-tereshkova-3bdf21.netlify.com', 'https://8000-f7a9f611-984b-4cc3-a802-859bf1fe449b.ws-ap01.gitpod.io', 'https://torrentz2.link', 'https://www.torrentz2.link']
 var corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
