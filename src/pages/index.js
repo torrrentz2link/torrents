@@ -88,6 +88,7 @@ const isError = (<Message icon negative size='mini'>
 // if (process.env.)
 console.log(11111, process.env)
 const http = axios.create({
+    timeout: 15000,
     baseURL: "https://torrentsfreelancer.herokuapp.com/"
 })
 // .create({
