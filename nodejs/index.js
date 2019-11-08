@@ -28,12 +28,12 @@ const speedLimiter = slowDown({
 
 //  apply to all requests
 app.use(speedLimiter);
-// TorrentSearchApi.enablePublicProviders(); //slows down
-TorrentSearchApi.enableProvider('KickassTorrents'); //doesnt work
-TorrentSearchApi.enableProvider('ThePirateBay',);
-TorrentSearchApi.enableProvider('Rarbg',);
-TorrentSearchApi.enableProvider('Torrentz2',);
-TorrentSearchApi.enableProvider('1337x',);
+TorrentSearchApi.enablePublicProviders(); //slows down
+//TorrentSearchApi.enableProvider('KickassTorrents'); //doesnt work
+//TorrentSearchApi.enableProvider('ThePirateBay',);
+//TorrentSearchApi.enableProvider('Rarbg',);
+//TorrentSearchApi.enableProvider('Torrentz2',);
+//TorrentSearchApi.enableProvider('1337x',);
 // TorrentSearchApi.enableProvider('ThePirateBay','Rarbg','Torrentz2','1337x');
 
 const PORT = process.env.PORT || 5000
