@@ -28,9 +28,9 @@ const speedLimiter = slowDown({
 
 //  apply to all requests
 app.use(speedLimiter);
-TorrentSearchApi.enablePublicProviders(); //slows down
+//TorrentSearchApi.enablePublicProviders(); //slows down
 //TorrentSearchApi.enableProvider('KickassTorrents'); //doesnt work
-//TorrentSearchApi.enableProvider('ThePirateBay',);
+TorrentSearchApi.enableProvider('ThePirateBay',);
 //TorrentSearchApi.enableProvider('Rarbg',);
 //TorrentSearchApi.enableProvider('Torrentz2',);
 //TorrentSearchApi.enableProvider('1337x',);
