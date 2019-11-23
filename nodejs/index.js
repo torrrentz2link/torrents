@@ -7,6 +7,7 @@ var cors = require('cors')
 var whitelist = ['https://ecstatic-tereshkova-3bdf21.netlify.com','https://cocky-mayer-c8bd64.netlify.com', 'https://8000-f7a9f611-984b-4cc3-a802-859bf1fe449b.ws-ap01.gitpod.io', 'https://torrentz2.link', 'https://www.torrentz2.link']
 var corsOptions = {
   origin: function (origin, callback) {
+          console.log(1111, origin)
     if (whitelist.indexOf(origin) !== -1) {
       callback(null, true)
     } else {
@@ -28,12 +29,15 @@ const speedLimiter = slowDown({
 
 //  apply to all requests
 app.use(speedLimiter);
-//TorrentSearchApi.enablePublicProviders(); //slows down
-//TorrentSearchApi.enableProvider('KickassTorrents'); //doesnt work
+// TorrentSearchApi.enablePublicProviders(); //slows down
+TorrentSearchApi.enableProvider('KickassTorrents'); //doesnt work
 TorrentSearchApi.enableProvider('ThePirateBay',);
-//TorrentSearchApi.enableProvider('Rarbg',);
-//TorrentSearchApi.enableProvider('Torrentz2',);
-//TorrentSearchApi.enableProvider('1337x',);
+TorrentSearchApi.enableProvider('Rarbg',);
+TorrentSearchApi.enableProvider('Torrentz2',);
+TorrentSearchApi.enableProvider('1337x',);
+TorrentSearchApi.enableProvider('TorrentProject',);
+TorrentSearchApi.enableProvider('ExtraTorrent',);
+
 // TorrentSearchApi.enableProvider('ThePirateBay','Rarbg','Torrentz2','1337x');
 
 const PORT = process.env.PORT || 5000
