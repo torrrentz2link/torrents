@@ -4,7 +4,7 @@ var app = express();
 const slowDown = require("express-slow-down");
 var cors = require('cors')
 
-var whitelist = [ 'https://androidtorrentz2.herokuapp.com/' , 'https://hopeful-yonath-134f25.netlify.com']
+var whitelist = [ 'https://androidtorrentz.herokuapp.com/' , 'https://hopeful-yonath-134f25.netlify.com']
 var corsOptions = {
   origin: function (origin, callback) {
           console.log(1111, origin)
